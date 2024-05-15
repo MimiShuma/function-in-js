@@ -20,13 +20,20 @@ let columnOfTextNodes = getTextNodeFromText(columnTexts);
 
 console.log(columnOfTextNodes);
 
+// get td node from text nodes
+
 function getTdNodesFromTextNodes(arrayOfTextNodes2) {
+    // APPLY IS ARRAY CHECKING
+
     let arrayOfTdNodes = [];
-    let td = "";
+    let td = null;
     for (let i = 0; i < arrayOfTextNodes2.length; i++) {
-        td = document.createElement("td");
+        td = document.createElement("TD");
+        if (arrayOfTextNodes2[i].nodeType == 3) {
+            td.appendChild(arrayOfTextNodes2[i]);
+        }
         // arrayOfTdNodes[i] = td.appendChild(arrayOfTextNodes2[i]);
-        arrayOfTdNodes.push(td.appendChild(arrayOfTextNodes2[i]));
+        arrayOfTdNodes.push(td);
     }
     return arrayOfTdNodes;
 }
@@ -35,7 +42,19 @@ let columnOfTdNodes = getTdNodesFromTextNodes(columnOfTextNodes);
 
 console.log(columnOfTdNodes);
 
-// get td node from text nodes
+function getTrNodeFromTdNodes(arrayOfTdNodes) {
+    let trNode = document.createElement("TR");
+    for (let i = 0; i < arrayOfTdNodes.length; i++) {
+        trNode.appendChild(arrayOfTdNodes[i]);
+    }
+    return trNode;
+}
+
+let getTr = getTrNodeFromTdNodes(columnOfTdNodes);
+
+console.log(getTr);
+
+
 
 // function td(txtNode) {
 //     let td = document.createElement("td");
