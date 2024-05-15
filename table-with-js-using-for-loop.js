@@ -1,3 +1,5 @@
+
+
 function td(txtNode) {
     let td = document.createElement("td");
     td.appendChild(txtNode);
@@ -19,7 +21,11 @@ for (let i = 0; i < columnTexts.length; i++) {
     cells.push(td(cellText));
 }
 
-let trX2 = tr(cells); //cell is an array containing 3 td with 3 textNode
+let shuma = {
+    insertRow: function () {
+        let tbody2 = document.querySelector('#sampleTable2 tbody');
+        return tbody2.appendChild(tr(cells));
+    }
+}
 
-let tbody2 = document.querySelector('#sampleTable2 tbody');
-tbody2.appendChild(trX2);
+shuma.insertRow();
