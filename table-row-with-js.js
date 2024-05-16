@@ -10,20 +10,22 @@ const Shuma = {
         for (let i = 0; i < arrayOfTexts.length; i++) {
             textNode = document.createTextNode(arrayOfTexts[i]);
             arrayOfTextNodes.push(textNode); // preferred
-            // columnTextNodes[i] = textNode; // same as lines 6
+            // columnTextNodes[i] = textNode; // same as the line above
         }
         return arrayOfTextNodes;
     },
 
-    getTdNodesFromTextNodes: function (arrayOfTextNodes2) {
-        // APPLY IS ARRAY CHECKING
-
+    getTdNodesFromTextNodes: function (arrayOfTextNodes) {
+        // APPLY ISARRAY CHECKING
+        if (!Array.isArray(arrayOfTextNodes)) {
+            return [];
+        }
         let arrayOfTdNodes = [];
         let td = null;
-        for (let i = 0; i < arrayOfTextNodes2.length; i++) {
+        for (let i = 0; i < arrayOfTextNodes.length; i++) {
             td = document.createElement("TD");
-            if (arrayOfTextNodes2[i].nodeType == 3) {
-                td.appendChild(arrayOfTextNodes2[i]);
+            if (arrayOfTextNodes[i].nodeType == 3) {
+                td.appendChild(arrayOfTextNodes[i]);
             }
             // arrayOfTdNodes[i] = td.appendChild(arrayOfTextNodes2[i]);
             arrayOfTdNodes.push(td);
@@ -31,7 +33,25 @@ const Shuma = {
         return arrayOfTdNodes;
     },
 
-    getTrNodeFromTdNodes: function (arrayOfTdNodes) {
+    getThNodesFromTextNodes: function (arrayOfTextNodes) {
+        // APPLY ISARRAY CHECKING
+        if (!Array.isArray(arrayOfTextNodes)) {
+            return [];
+        }
+        let arrayOfThNodes = [];
+        let th = null;
+        for (let i = 0; i < arrayOfTextNodes.length; i++) {
+            th = document.createElement("TH");
+            if (arrayOfTextNodes[i].nodeType == 3) {
+                th.appendChild(arrayOfTextNodes[i]);
+            }
+            // arrayOfTdNodes[i] = th.appendChild(arrayOfTextNodes2[i]);
+            arrayOfThNodes.push(th);
+        }
+        return arrayOfThNodes;
+    },
+
+    getTrNodeFromTdOrThNodes: function (arrayOfTdNodes) {
         let trNode = document.createElement("TR");
         for (let i = 0; i < arrayOfTdNodes.length; i++) {
             trNode.appendChild(arrayOfTdNodes[i]);
@@ -50,16 +70,26 @@ const Shuma = {
             let columnTexts = row;
 
             let columnOfTextNodes = Shuma.getTextNodeFromText(columnTexts);
-            let columnOfTdNodes = Shuma.getTdNodesFromTextNodes(columnOfTextNodes);
-            let tr = Shuma.getTrNodeFromTdNodes(columnOfTdNodes);
 
-            Shuma.insertRow(tr, 'sampleTbody');
+            if (rowsData.indexOf(row) === 0) {
+                let columnOfThNodes = Shuma.getThNodesFromTextNodes(columnOfTextNodes);
+                let th = Shuma.getTrNodeFromTdOrThNodes(columnOfThNodes);
+
+                Shuma.insertRow(th, 'sampleThead');
+            }
+            else {
+                let columnOfTdNodes = Shuma.getTdNodesFromTextNodes(columnOfTextNodes);
+                let tr = Shuma.getTrNodeFromTdOrThNodes(columnOfTdNodes);
+
+                Shuma.insertRow(tr, 'sampleTbody');
+            }
         }
     }
 }
 
-let tableData = [
-    ['A', 'B', 'C', 'D'],  // index [0] is always thead
+let tableData = [   // index [0] is always thead
+    ['head 1', 'head 2', 'head 3', 'head 4'],
+    ['A', 'B', 'C', 'D'],
     ["Column 11", "Column 22", "Column 33", 1],
     ["Column 111", "Column 222", "Column 333", 2],
     ["Column 1111", "Column 2222", "Column 3333", 3],
